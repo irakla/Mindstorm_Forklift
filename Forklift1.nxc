@@ -1,0 +1,79 @@
+#include "NXCDefs.h"
+
+bool detect(){
+   SetSensorLowspeed(S1);
+   ClearSensor(S1);
+   
+   if(SensorUS(S1) < 17)
+   return true;
+   else
+   return false;
+}
+
+
+void catch(){
+     OnFwd(OUT_A, 50);
+     Wait(500);
+     OnFwd(OUT_B, 50);
+     Wait(500);
+     OnRev(OUT_B, 0);
+     Wait(2000);
+     Off(OUT_A);
+     Off(OUT_B);
+     Wait(1000);
+     OnRev(OUT_A, 100);
+     Wait(500);
+     OnFwdReg(OUT_B, 70, true);
+     Wait(1500);
+     Off(OUT_B);
+     OnFwd(OUT_A, 30);
+     Wait(1000);
+     Off(OUT_A);
+     OnRev(OUT_B, 30);
+     Wait(1000);
+     OnRev(OUT_B, 100);
+     Wait(2000);
+     return;
+}
+
+void throw(){
+     OnFwd(OUT_A, 50);
+     Wait(500);
+     Off(OUT_A);
+     OnFwd(OUT_B, 70);
+     Wait(1000);
+     OnRev(OUT_B, 5);
+     Off(OUT_A);
+     Wait(1000);
+     OnRev(OUT_A, 100);
+     Wait(500);
+     OnRev(OUT_A, 30);
+     //Off(OUT_A);
+     OnRev(OUT_B, 100);
+     Wait(750);
+     OnFwd(OUT_A, 50);
+     Wait(1000);
+     OnRev(OUT_B, 30);
+     Off(OUT_A);
+     Wait(1000);
+     OnRev(OUT_B, 70);
+     Wait(2000);
+     return;
+}
+
+task main(){
+     while(true){
+     if(detect()){
+     catch();
+     OnFwd(OUT_C, 100);
+     Wait(2000);
+     Off(OUT_C);
+     throw();
+     Wait(10000);
+     OnRev(OUT_C, 100);
+     TextOut(5, LCD_LINE2, "Ha!", true);
+     Wait(2000);
+     Off(OUT_C);
+     }
+     }
+}
